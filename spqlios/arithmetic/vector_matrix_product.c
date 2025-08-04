@@ -34,15 +34,6 @@ EXPORT void vmp_prepare_contiguous(const MODULE* module,                        
   module->func.vmp_prepare_contiguous(module, pmat, mat, nrows, ncols, tmp_space);
 }
 
-/** @brief prepares a vmp matrix (contiguous row-major version) */
-EXPORT void vmp_prepare_contiguous_dft(const MODULE* module,                                // N
-                                   VMP_PMAT* pmat,                                      // output
-                                   const int64_t* mat, uint64_t nrows, uint64_t ncols,  // a
-                                   uint8_t* tmp_space                                   // scratch space
-) {
-  module->func.vmp_prepare_contiguous_dft(module, pmat, mat, nrows, ncols, tmp_space);
-}
-
 /** @brief minimal scratch space byte-size required for the vmp_prepare function */
 EXPORT uint64_t vmp_prepare_tmp_bytes(const MODULE* module,  // N
                                       uint64_t nrows, uint64_t ncols) {
@@ -99,26 +90,6 @@ EXPORT void fft64_vmp_prepare_contiguous_ref(const MODULE* module,              
         reim_fft(module->mod.fft64.p_fft, res);
       }
     }
-  }
-}
-
-/** @brief prepares a vmp matrix (contiguous row-dbl version) where the input is already in DFT domain */
-EXPORT void fft64_vmp_prepare_contiguous_dft_ref(const MODULE* module,                                // N
-                                             VMP_PMAT* pmat,                                      // output
-                                             const double* mat, uint64_t nrows, uint64_t ncols,  // a
-) {
-  // there is an edge case if nn < 8
-  const uint64_t nn = module->nn;
-  const uint64_t m = module->m;
-
-  if (nn >= 8) {
-    for (uint64_t row_i = 0; row_i < nrows; row_i++) {
-      for (uint64_t col_i = 0; col_i < ncols; col_i++) {
-        fft64_store_svp_ppol_into_vmp_pmat_row_blk_ref(nn, m, (SVP_PPOL*)(mat  + (row_i * ncols + col_i) * nn), row_i, col_i, nrows, ncols, pmat);
-      }
-    }
-  } else {
-    memcpy((double*)pmat, mat, nn * nrows * ncols * sizeof(double))
   }
 }
 
