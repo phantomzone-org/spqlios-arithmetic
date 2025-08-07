@@ -130,7 +130,7 @@ EXPORT void znx_mul_xp_minus_one(uint64_t nn, int64_t p, int64_t* res, const int
   }
 }
 
-EXPORT void rnx_mul_xp_minus_one_inplace(uint64_t nn, int64_t p, int64_t* res) {
+EXPORT void znx_mul_xp_minus_one_inplace(uint64_t nn, int64_t p, int64_t* res) {
   const uint64_t _2mn = 2 * nn - 1;
   const uint64_t _mn = nn - 1;
   uint64_t nb_modif = 0;
