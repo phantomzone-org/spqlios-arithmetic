@@ -200,51 +200,57 @@ EXPORT void fft64_vec_znx_big_automorphism(const MODULE* module,                
   vec_znx_automorphism(module, p, (int64_t*)res, res_size, nn, (int64_t*)a, a_size, nn);
 }
 
-EXPORT void vec_znx_big_normalize_base2k(const MODULE* module,                              // N
+EXPORT void vec_znx_big_normalize_base2k(const MODULE* module,                              // MODULE
+                                         uint64_t nn,                                       // N
                                          uint64_t k,                                        // base-2^k
                                          int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
                                          const VEC_ZNX_BIG* a, uint64_t a_size,             // a
                                          uint8_t* tmp_space                                 // temp space
 ) {
-  module->func.vec_znx_big_normalize_base2k(module,                 // N
+  module->func.vec_znx_big_normalize_base2k(module,                 // MODULE
+                                            nn,                     // N
                                             k,                      // base-2^k
                                             res, res_size, res_sl,  // res
                                             a, a_size,              // a
                                             tmp_space);
 }
 
-EXPORT uint64_t vec_znx_big_normalize_base2k_tmp_bytes(const MODULE* module  // N
+EXPORT uint64_t vec_znx_big_normalize_base2k_tmp_bytes(const MODULE* module, uint64_t nn  // N
 ) {
-  return module->func.vec_znx_big_normalize_base2k_tmp_bytes(module  // N
+  return module->func.vec_znx_big_normalize_base2k_tmp_bytes(module, nn  // N
   );
 }
 
 /** @brief sets res = k-normalize(a.subrange) -- output in int64 coeffs space */
 EXPORT void vec_znx_big_range_normalize_base2k(                                                  //
-    const MODULE* module,                                                                        // N
+    const MODULE* module,                                                                        // MODULE
+    uint64_t nn,                                                                                 // N
     uint64_t log2_base2k,                                                                        // base-2^k
     int64_t* res, uint64_t res_size, uint64_t res_sl,                                            // res
     const VEC_ZNX_BIG* a, uint64_t a_range_begin, uint64_t a_range_xend, uint64_t a_range_step,  // range
     uint8_t* tmp_space                                                                           // temp space
 ) {
-  module->func.vec_znx_big_range_normalize_base2k(module, log2_base2k, res, res_size, res_sl, a, a_range_begin,
+  module->func.vec_znx_big_range_normalize_base2k(module, nn, log2_base2k, res, res_size, res_sl, a, a_range_begin,
                                                   a_range_xend, a_range_step, tmp_space);
 }
 
 /** @brief returns the minimal byte length of scratch space for vec_znx_big_range_normalize_base2k */
 EXPORT uint64_t vec_znx_big_range_normalize_base2k_tmp_bytes(  //
-    const MODULE* module                                       // N
+    const MODULE* module,                                       // MODULE
+    uint64_t nn                                               // N
 ) {
-  return module->func.vec_znx_big_range_normalize_base2k_tmp_bytes(module);
+  return module->func.vec_znx_big_range_normalize_base2k_tmp_bytes(module, nn);
 }
 
-EXPORT void fft64_vec_znx_big_normalize_base2k(const MODULE* module,                              // N
+EXPORT void fft64_vec_znx_big_normalize_base2k(const MODULE* module,                              // MODULE
+                                               uint64_t nn,                                       // N
                                                uint64_t k,                                        // base-2^k
                                                int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
                                                const VEC_ZNX_BIG* a, uint64_t a_size,             // a
                                                uint8_t* tmp_space) {
-  uint64_t a_sl = module->nn;
+  uint64_t a_sl = nn;
   module->func.vec_znx_normalize_base2k(module,                     // N
+                                        nn,
                                         k,                          // log2_base2k
                                         res, res_size, res_sl,      // res
                                         (int64_t*)a, a_size, a_sl,  // a
@@ -252,17 +258,19 @@ EXPORT void fft64_vec_znx_big_normalize_base2k(const MODULE* module,            
 }
 
 EXPORT void fft64_vec_znx_big_range_normalize_base2k(                         //
-    const MODULE* module,                                                     // N
+    const MODULE* module,                                                     // MODULE
+    uint64_t nn,                                                              // N
     uint64_t k,                                                               // base-2^k
     int64_t* res, uint64_t res_size, uint64_t res_sl,                         // res
     const VEC_ZNX_BIG* a, uint64_t a_begin, uint64_t a_end, uint64_t a_step,  // a
     uint8_t* tmp_space) {
   // convert the range indexes to int64[] slices
-  const int64_t* a_st = ((int64_t*)a) + module->nn * a_begin;
+  const int64_t* a_st = ((int64_t*)a) + nn * a_begin;
   const uint64_t a_size = (a_end + a_step - 1 - a_begin) / a_step;
-  const uint64_t a_sl = module->nn * a_step;
+  const uint64_t a_sl = nn * a_step;
   // forward the call
-  module->func.vec_znx_normalize_base2k(module,                 // N
+  module->func.vec_znx_normalize_base2k(module,                 // MODULE
+                                        nn,                     // N
                                         k,                      // log2_base2k
                                         res, res_size, res_sl,  // res
                                         a_st, a_size, a_sl,     // a
