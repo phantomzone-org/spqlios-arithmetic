@@ -10,6 +10,7 @@ static void fill_generic_virtual_table(MODULE* module) {
   module->func.vec_znx_add = vec_znx_add_ref;
   module->func.vec_znx_sub = vec_znx_sub_ref;
   module->func.vec_znx_rotate = vec_znx_rotate_ref;
+  module->func.vec_znx_mul_xp_minus_one = vec_znx_mul_xp_minus_one_ref;
   module->func.vec_znx_automorphism = vec_znx_automorphism_ref;
   module->func.vec_znx_normalize_base2k = vec_znx_normalize_base2k_ref;
   module->func.vec_znx_normalize_base2k_tmp_bytes = vec_znx_normalize_base2k_tmp_bytes_ref;

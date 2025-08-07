@@ -144,8 +144,8 @@ void test_mul_xp_minus_one_outplace(F rotate) {
   }
 }
 
-TEST(coeffs_arithmetic, rnx_mul_xp_minus_one_f64) { test_mul_xp_minus_one_outplace<double>(rnx_mul_xp_minus_one); }
-TEST(coeffs_arithmetic, znx_mul_xp_minus_one_i64) { test_mul_xp_minus_one_outplace<int64_t>(znx_mul_xp_minus_one); }
+TEST(coeffs_arithmetic, rnx_mul_xp_minus_one_f64) { test_mul_xp_minus_one_outplace<double>(rnx_mul_xp_minus_one_f64); }
+TEST(coeffs_arithmetic, znx_mul_xp_minus_one_i64) { test_mul_xp_minus_one_outplace<int64_t>(znx_mul_xp_minus_one_i64); }
 
 /// tests of the rotations out of place
 template <typename T, typename F>
@@ -168,7 +168,7 @@ void test_mul_xp_minus_one_inplace(F rotate) {
 }
 
 TEST(coeffs_arithmetic, rnx_mul_xp_minus_one_inplace_f64) {
-  test_mul_xp_minus_one_inplace<double>(rnx_mul_xp_minus_one_inplace);
+  test_mul_xp_minus_one_inplace<double>(rnx_mul_xp_minus_one_inplace_f64);
 }
 
 // TEST(coeffs_arithmetic, znx_mul_xp_minus_one_inplace_i64) {

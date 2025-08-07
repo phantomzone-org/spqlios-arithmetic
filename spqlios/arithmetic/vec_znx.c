@@ -50,6 +50,18 @@ EXPORT void vec_znx_rotate(const MODULE* module,                              //
   );
 }
 
+EXPORT void vec_znx_mul_xp_minus_one(const MODULE* module,                              // N
+                           const int64_t p,                                   // p
+                           int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
+                           const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
+) {
+  module->func.vec_znx_mul_xp_minus_one(module,                 // N
+                              p,                      // p
+                              res, res_size, res_sl,  // res
+                              a, a_size, a_sl         // a
+  );
+}
+
 EXPORT void vec_znx_automorphism(const MODULE* module,                              // N
                                  const int64_t p,                                   // X->X^p
                                  int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
@@ -177,6 +189,29 @@ EXPORT void vec_znx_rotate_ref(const MODULE* module,                            
       znx_rotate_inplace_i64(nn, p, res_ptr);
     } else {
       znx_rotate_i64(nn, p, res_ptr, a_ptr);
+    }
+  }
+  // then extend with zeros
+  for (uint64_t i = rot_end_idx; i < res_size; ++i) {
+    znx_zero_i64_ref(nn, res + i * res_sl);
+  }
+}
+
+EXPORT void vec_znx_mul_xp_minus_one_ref(const MODULE* module,                              // N
+                               const int64_t p,                                   // p
+                               int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
+                               const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
+) {
+  const uint64_t nn = module->nn;
+
+  const uint64_t rot_end_idx = res_size < a_size ? res_size : a_size;
+  for (uint64_t i = 0; i < rot_end_idx; ++i) {
+    int64_t* res_ptr = res + i * res_sl;
+    const int64_t* a_ptr = a + i * a_sl;
+    if (res_ptr == a_ptr) {
+      znx_mul_xp_minus_one_inplace_i64(nn, p, res_ptr);
+    } else {
+      znx_mul_xp_minus_one_i64(nn, p, res_ptr, a_ptr);
     }
   }
   // then extend with zeros

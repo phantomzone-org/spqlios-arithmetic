@@ -137,6 +137,13 @@ EXPORT void vec_znx_rotate(const MODULE* module,                              //
                            const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
 );
 
+/** @brief sets res = a * (X^{p} - 1) */
+EXPORT void vec_znx_mul_xp_minus_one(const MODULE* module,                              // N
+                           const int64_t p,                                   // rotation value
+                           int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
+                           const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
+);
+
 /** @brief sets res = a(X^p) */
 EXPORT void vec_znx_automorphism(const MODULE* module,                              // N
                                  const int64_t p,                                   // X-X^p

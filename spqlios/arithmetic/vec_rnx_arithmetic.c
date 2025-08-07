@@ -211,9 +211,9 @@ EXPORT void vec_rnx_mul_xp_minus_one_ref(             //
     double* res_ptr = res + i * res_sl;
     const double* a_ptr = a + i * a_sl;
     if (res_ptr == a_ptr) {
-      rnx_mul_xp_minus_one_inplace(nn, p, res_ptr);
+      rnx_mul_xp_minus_one_inplace_f64(nn, p, res_ptr);
     } else {
-      rnx_mul_xp_minus_one(nn, p, res_ptr, a_ptr);
+      rnx_mul_xp_minus_one_f64(nn, p, res_ptr, a_ptr);
     }
   }
   // then extend with zeros

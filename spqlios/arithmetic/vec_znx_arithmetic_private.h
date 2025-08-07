@@ -73,6 +73,7 @@ typedef typeof(vec_znx_idft_tmp_bytes) VEC_ZNX_IDFT_TMP_BYTES_F;
 typedef typeof(vec_znx_idft_tmp_a) VEC_ZNX_IDFT_TMP_A_F;
 typedef typeof(vec_znx_sub) VEC_ZNX_SUB_F;
 typedef typeof(vec_znx_rotate) VEC_ZNX_ROTATE_F;
+typedef typeof(vec_znx_mul_xp_minus_one) VEC_ZNX_MUL_XP_MINUS_ONE_F;
 typedef typeof(vec_znx_automorphism) VEC_ZNX_AUTOMORPHISM_F;
 typedef typeof(vec_znx_normalize_base2k) VEC_ZNX_NORMALIZE_BASE2K_F;
 typedef typeof(vec_znx_normalize_base2k_tmp_bytes) VEC_ZNX_NORMALIZE_BASE2K_TMP_BYTES_F;
@@ -121,6 +122,7 @@ struct module_virtual_functions_t {
   VEC_ZNX_IDFT_TMP_A_F* vec_znx_idft_tmp_a;
   VEC_ZNX_SUB_F* vec_znx_sub;
   VEC_ZNX_ROTATE_F* vec_znx_rotate;
+  VEC_ZNX_MUL_XP_MINUS_ONE_F* vec_znx_mul_xp_minus_one;
   VEC_ZNX_AUTOMORPHISM_F* vec_znx_automorphism;
   VEC_ZNX_DFT_AUTOMORPHISM_F* vec_znx_dft_automorphism;
   VEC_ZNX_DFT_AUTOMORPHISM_TMP_BYTES_F* vec_znx_dft_automorphism_tmp_bytes;
@@ -238,6 +240,12 @@ EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes_ref(const MODULE* module, uin
 );
 
 EXPORT void vec_znx_rotate_ref(const MODULE* module,                              // N
+                               const int64_t p,                                   // rotation value
+                               int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
+                               const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
+);
+
+EXPORT void vec_znx_mul_xp_minus_one_ref(const MODULE* module,                              // N
                                const int64_t p,                                   // rotation value
                                int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
                                const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
