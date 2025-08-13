@@ -127,7 +127,7 @@ static void test_fft64_vec_znx_idft(VEC_ZNX_IDFT_F idft, VEC_ZNX_IDFT_TMP_A_F id
                                     VEC_ZNX_IDFT_TMP_BYTES_F idft_tmp_bytes) {
   for (uint64_t n : {2, 4, 64, 128}) {
     MODULE* module = new_module_info(n, FFT64);
-    uint64_t tmp_size = idft_tmp_bytes ? idft_tmp_bytes(module) : 0;
+    uint64_t tmp_size = idft_tmp_bytes ? idft_tmp_bytes(module, n) : 0;
     std::vector<uint8_t> tmp(tmp_size);
     for (uint64_t sa : {3, 5, 8}) {
       for (uint64_t sr : {3, 5, 8}) {
@@ -173,7 +173,7 @@ static void test_ntt120_vec_znx_idft(VEC_ZNX_IDFT_F idft, VEC_ZNX_IDFT_TMP_A_F i
                                      VEC_ZNX_IDFT_TMP_BYTES_F idft_tmp_bytes) {
   for (uint64_t n : {2, 4, 64, 128}) {
     MODULE* module = new_module_info(n, NTT120);
-    uint64_t tmp_size = idft_tmp_bytes ? idft_tmp_bytes(module) : 0;
+    uint64_t tmp_size = idft_tmp_bytes ? idft_tmp_bytes(module, n) : 0;
     std::vector<uint8_t> tmp(tmp_size);
     for (uint64_t sa : {3, 5, 8}) {
       for (uint64_t sr : {3, 5, 8}) {

@@ -19,8 +19,8 @@ EXPORT void fft64_znx_small_single_product(const MODULE* module,  // N
 }
 
 /** @brief tmp bytes required for znx_small_single_product  */
-EXPORT uint64_t fft64_znx_small_single_product_tmp_bytes(const MODULE* module) {
-  return 2 * module->nn * sizeof(double);
+EXPORT uint64_t fft64_znx_small_single_product_tmp_bytes(const MODULE* module, uint64_t nn) {
+  return 2 * nn * sizeof(double);
 }
 
 /** @brief res = a * b : small integer polynomial product  */
@@ -33,6 +33,6 @@ EXPORT void znx_small_single_product(const MODULE* module,  // N
 }
 
 /** @brief tmp bytes required for znx_small_single_product  */
-EXPORT uint64_t znx_small_single_product_tmp_bytes(const MODULE* module) {
-  return module->func.znx_small_single_product_tmp_bytes(module);
+EXPORT uint64_t znx_small_single_product_tmp_bytes(const MODULE* module, uint64_t nn) {
+  return module->func.znx_small_single_product_tmp_bytes(module, nn);
 }

@@ -35,9 +35,9 @@ EXPORT void vmp_prepare_contiguous(const MODULE* module,                        
 }
 
 /** @brief minimal scratch space byte-size required for the vmp_prepare function */
-EXPORT uint64_t vmp_prepare_tmp_bytes(const MODULE* module,  // N
+EXPORT uint64_t vmp_prepare_tmp_bytes(const MODULE* module, uint64_t nn,  // N
                                       uint64_t nrows, uint64_t ncols) {
-  return module->func.vmp_prepare_tmp_bytes(module, nrows, ncols);
+  return module->func.vmp_prepare_tmp_bytes(module, nn, nrows, ncols);
 }
 
 EXPORT double* get_blk_addr(uint64_t row_i, uint64_t col_i, uint64_t nrows, uint64_t ncols, const VMP_PMAT* pmat) {
@@ -94,9 +94,8 @@ EXPORT void fft64_vmp_prepare_contiguous_ref(const MODULE* module,              
 }
 
 /** @brief minimal scratch space byte-size required for the vmp_prepare function */
-EXPORT uint64_t fft64_vmp_prepare_tmp_bytes(const MODULE* module,  // N
+EXPORT uint64_t fft64_vmp_prepare_tmp_bytes(const MODULE* module, uint64_t nn,  // N
                                             uint64_t nrows, uint64_t ncols) {
-  const uint64_t nn = module->nn;
   return nn * sizeof(int64_t);
 }
 
@@ -291,19 +290,17 @@ EXPORT void fft64_vmp_apply_dft_to_dft_ref(const MODULE* module,                
 }
 
 /** @brief minimal size of the tmp_space */
-EXPORT uint64_t fft64_vmp_apply_dft_tmp_bytes(const MODULE* module,           // N
+EXPORT uint64_t fft64_vmp_apply_dft_tmp_bytes(const MODULE* module, uint64_t nn,           // N
                                               uint64_t res_size,              // res
                                               uint64_t a_size,                // a
                                               uint64_t nrows, uint64_t ncols  // prep matrix
 ) {
-  const uint64_t nn = module->nn;
   const uint64_t row_max = nrows < a_size ? nrows : a_size;
-
   return (row_max * nn * sizeof(double)) + (128) + (64 * row_max);
 }
 
 /** @brief minimal size of the tmp_space */
-EXPORT uint64_t fft64_vmp_apply_dft_to_dft_tmp_bytes(const MODULE* module,           // N
+EXPORT uint64_t fft64_vmp_apply_dft_to_dft_tmp_bytes(const MODULE* module, uint64_t nn,           // N
                                                      uint64_t res_size,              // res
                                                      uint64_t a_size,                // a
                                                      uint64_t nrows, uint64_t ncols  // prep matrix
@@ -334,12 +331,12 @@ EXPORT void vmp_apply_dft_to_dft_add(const MODULE* module,                      
                                         tmp_space);
 }
 
-EXPORT uint64_t vmp_apply_dft_to_dft_tmp_bytes(const MODULE* module,           // N
+EXPORT uint64_t vmp_apply_dft_to_dft_tmp_bytes(const MODULE* module, uint64_t nn,           // N
                                                uint64_t res_size,              // res
                                                uint64_t a_size,                // a
                                                uint64_t nrows, uint64_t ncols  // prep matrix
 ) {
-  return module->func.vmp_apply_dft_to_dft_tmp_bytes(module, res_size, a_size, nrows, ncols);
+  return module->func.vmp_apply_dft_to_dft_tmp_bytes(module, nn, res_size, a_size, nrows, ncols);
 }
 
 /** @brief applies a vmp product (result in DFT space) adds to res inplace */
@@ -363,10 +360,10 @@ EXPORT void vmp_apply_dft(const MODULE* module,                                 
 }
 
 /** @brief minimal size of the tmp_space */
-EXPORT uint64_t vmp_apply_dft_tmp_bytes(const MODULE* module,           // N
+EXPORT uint64_t vmp_apply_dft_tmp_bytes(const MODULE* module, uint64_t nn,           // N
                                         uint64_t res_size,              // res
                                         uint64_t a_size,                // a
                                         uint64_t nrows, uint64_t ncols  // prep matrix
 ) {
-  return module->func.vmp_apply_dft_tmp_bytes(module, res_size, a_size, nrows, ncols);
+  return module->func.vmp_apply_dft_tmp_bytes(module, nn, res_size, a_size, nrows, ncols);
 }

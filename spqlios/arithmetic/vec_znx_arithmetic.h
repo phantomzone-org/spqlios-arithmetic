@@ -151,16 +151,6 @@ EXPORT void vec_znx_automorphism(const MODULE* module,                          
                                  const int64_t* a, uint64_t a_size, uint64_t a_sl   // a
 );
 
-/** @brief returns the minimum scratch space to apply an automorphism in DFT */
-EXPORT uint64_t vec_znx_dft_automorphism_tmp_bytes(const MODULE* module);
-
-/** @brief sets DFT(res) = DFT(a(X^p)) */
-EXPORT void vec_znx_dft_automorphism(const MODULE* module,                   // N
-                                     const int64_t p,                        // X-X^p
-                                     VEC_ZNX_DFT* res, uint64_t res_size,    // res
-                                     const VEC_ZNX_DFT* a, uint64_t a_size,  // a
-                                     uint8_t* tmp_bytes);
-
 /** @brief sets res = 0 */
 EXPORT void vec_dft_zero(const MODULE* module,                // N
                          VEC_ZNX_DFT* res, uint64_t res_size  // res
@@ -194,7 +184,7 @@ EXPORT void vec_znx_idft(const MODULE* module,                       // N
 );
 
 /** @brief tmp bytes required for vec_znx_idft  */
-EXPORT uint64_t vec_znx_idft_tmp_bytes(const MODULE* module);
+EXPORT uint64_t vec_znx_idft_tmp_bytes(const MODULE* module, uint64_t nn);
 
 /**
  * @brief      sets res = iDFT(a_dft) -- output in big coeffs space
@@ -317,14 +307,10 @@ EXPORT void znx_small_single_product(const MODULE* module,  // N
                                      uint8_t* tmp);
 
 /** @brief tmp bytes required for znx_small_single_product  */
-EXPORT uint64_t znx_small_single_product_tmp_bytes(const MODULE* module);
+EXPORT uint64_t znx_small_single_product_tmp_bytes(const MODULE* module, uint64_t nn);
 
 /** @brief minimal scratch space byte-size required for the vmp_prepare function */
-EXPORT uint64_t vmp_prepare_tmp_bytes(const MODULE* module,  // N
-                                      uint64_t nrows, uint64_t ncols);
-
-/** @brief minimal scratch space byte-size required for the vmp_extract function */
-EXPORT uint64_t vmp_extract_tmp_bytes(const MODULE* module,  // N
+EXPORT uint64_t vmp_prepare_tmp_bytes(const MODULE* module, uint64_t nn,  // N
                                       uint64_t nrows, uint64_t ncols);
 
 /** @brief prepares a vmp matrix (contiguous row-major version) */
@@ -333,14 +319,6 @@ EXPORT void vmp_prepare_contiguous(const MODULE* module,                        
                                    const int64_t* mat, uint64_t nrows, uint64_t ncols,  // a
                                    uint8_t* tmp_space                                   // scratch space
 );
-
-/** @brief extracts the ith-row of a vmp matrix with nrows and ncols */
-EXPORT void vmp_extract_row(const MODULE* module, VEC_ZNX_BIG* res, const VMP_PMAT* pmat, uint64_t row_i,
-                            uint64_t nrows, uint64_t ncols);
-
-/** @brief extracts the ith-row of a vmp matrix with nrows and ncols */
-EXPORT void vmp_extract_row_dft(const MODULE* module, VEC_ZNX_DFT* res, const VMP_PMAT* pmat, uint64_t row_i,
-                                uint64_t nrows, uint64_t ncols);
 
 /** @brief applies a vmp product (result in DFT space) adds to res inplace */
 EXPORT void vmp_apply_dft_add(const MODULE* module,                                                       // N
@@ -359,7 +337,7 @@ EXPORT void vmp_apply_dft(const MODULE* module,                                 
 );
 
 /** @brief minimal size of the tmp_space */
-EXPORT uint64_t vmp_apply_dft_tmp_bytes(const MODULE* module,           // N
+EXPORT uint64_t vmp_apply_dft_tmp_bytes(const MODULE* module, uint64_t nn,           // N
                                         uint64_t res_size,              // res
                                         uint64_t a_size,                // a
                                         uint64_t nrows, uint64_t ncols  // prep matrix
@@ -384,7 +362,7 @@ EXPORT void vmp_apply_dft_to_dft_add(const MODULE* module,                      
 );
 
 /** @brief minimal size of the tmp_space */
-EXPORT uint64_t vmp_apply_dft_to_dft_tmp_bytes(const MODULE* module,           // N
+EXPORT uint64_t vmp_apply_dft_to_dft_tmp_bytes(const MODULE* module, uint64_t nn,           // N
                                                uint64_t res_size,              // res
                                                uint64_t a_size,                // a
                                                uint64_t nrows, uint64_t ncols  // prep matrix

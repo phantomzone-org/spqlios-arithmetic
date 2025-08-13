@@ -15,7 +15,7 @@ static void test_vmp_prepare_contiguous(VMP_PREPARE_CONTIGUOUS_F* prepare_contig
         znx_vec_i64_layout mat(nn, nrows * ncols, nn);
         fft64_vmp_pmat_layout pmat(nn, nrows, ncols);
         mat.fill_random(30);
-        std::vector<uint8_t> tmp_space(fft64_vmp_prepare_tmp_bytes(module, nrows, ncols));
+        std::vector<uint8_t> tmp_space(fft64_vmp_prepare_tmp_bytes(module, nn, nrows, ncols));
         thash hash_before = mat.content_hash();
         prepare_contiguous(module, pmat.data, mat.data(), nrows, ncols, tmp_space.data());
         ASSERT_EQ(mat.content_hash(), hash_before);
@@ -42,7 +42,7 @@ static void test_vmp_prepare_contiguous(VMP_PREPARE_CONTIGUOUS_F* prepare_contig
         znx_vec_i64_layout mat(nn, nrows * ncols, nn);
         fft64_vmp_pmat_layout pmat(nn, nrows, ncols);
         mat.fill_random(30);
-        std::vector<uint8_t> tmp_space(tmp_bytes(module, nrows, ncols));
+        std::vector<uint8_t> tmp_space(tmp_bytes(module, nn, nrows, ncols));
         thash hash_before = mat.content_hash();
         prepare_contiguous(module, pmat.data, mat.data(), nrows, ncols, tmp_space.data());
         ASSERT_EQ(mat.content_hash(), hash_before);
@@ -103,7 +103,7 @@ static void test_vmp_apply_add(VMP_APPLY_DFT_TO_DFT_ADD_F* apply, VMP_APPLY_DFT_
               }
 
               // apply the product
-              std::vector<uint8_t> tmp(tmp_bytes(module, out_size, in_size, mat_nrows, mat_ncols));
+              std::vector<uint8_t> tmp(tmp_bytes(module, nn, out_size, in_size, mat_nrows, mat_ncols));
               apply(module, out.data, out_size, in.data, in_size, pmat.data, mat_nrows, mat_ncols, mat_scale,
                     tmp.data());
               // check that the output is close from the expectation
@@ -154,7 +154,7 @@ static void test_vmp_apply(VMP_APPLY_DFT_TO_DFT_F* apply, VMP_APPLY_DFT_TO_DFT_T
             }
 
             // apply the product
-            std::vector<uint8_t> tmp(tmp_bytes(module, out_size, in_size, mat_nrows, mat_ncols));
+            std::vector<uint8_t> tmp(tmp_bytes(module, nn, out_size, in_size, mat_nrows, mat_ncols));
             apply(module, out.data, out_size, in.data, in_size, pmat.data, mat_nrows, mat_ncols, tmp.data());
             // check that the output is close from the expectation
             for (uint64_t col = 0; col < std::min(mat_ncols, out_size); ++col) {
