@@ -74,22 +74,22 @@ EXPORT void vec_znx_automorphism(const MODULE* module,                          
   );
 }
 
-EXPORT void vec_znx_normalize_base2k(const MODULE* module, uint64_t nn,                              // N
+EXPORT void vec_znx_normalize_base2k(const MODULE* module,                              // N
                                      uint64_t log2_base2k,                              // output base 2^K
                                      int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
                                      const int64_t* a, uint64_t a_size, uint64_t a_sl,  // a
                                      uint8_t* tmp_space                                 // scratch space of size >= N
 ) {
-  module->func.vec_znx_normalize_base2k(module, nn,                 // N
+  module->func.vec_znx_normalize_base2k(module,                 // N
                                         log2_base2k,            // log2_base2k
                                         res, res_size, res_sl,  // res
                                         a, a_size, a_sl,        // a
                                         tmp_space);
 }
 
-EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes(const MODULE* module, uint64_t nn  // N
+EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes(const MODULE* module  // N
 ) {
-  return module->func.vec_znx_normalize_base2k_tmp_bytes(module, nn  // N
+  return module->func.vec_znx_normalize_base2k_tmp_bytes(module  // N
   );
 }
 
@@ -244,7 +244,7 @@ EXPORT void vec_znx_automorphism_ref(const MODULE* module,                      
   }
 }
 
-EXPORT void vec_znx_normalize_base2k_ref(const MODULE* module, uint64_t nn,                              // N
+EXPORT void vec_znx_normalize_base2k_ref(const MODULE* module,                              // N
                                          uint64_t log2_base2k,                              // output base 2^K
                                          int64_t* res, uint64_t res_size, uint64_t res_sl,  // res
                                          const int64_t* a, uint64_t a_size, uint64_t a_sl,  // a
@@ -252,6 +252,7 @@ EXPORT void vec_znx_normalize_base2k_ref(const MODULE* module, uint64_t nn,     
 ) {
 
   // use MSB limb of res for carry propagation
+  uint64_t nn = module->nn;
   int64_t* cout = (int64_t*)tmp_space;
   int64_t* cin = 0x0;
 
@@ -277,34 +278,30 @@ EXPORT void vec_znx_normalize_base2k_ref(const MODULE* module, uint64_t nn,     
   }
 }
 
-EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes_ref(const MODULE* module, uint64_t nn  // N
+EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes_ref(const MODULE* module  // N
 ) {
-  return nn * sizeof(int64_t);
+  return module->nn * sizeof(int64_t);
 }
 
 // alias have to be defined in this unit: do not move
 #ifdef __APPLE__
 EXPORT uint64_t fft64_vec_znx_big_range_normalize_base2k_tmp_bytes(  //
     const MODULE* module,                                             // N
-    uint64_t nn
 ) {
-  return vec_znx_normalize_base2k_tmp_bytes_ref(module, nn);
+  return vec_znx_normalize_base2k_tmp_bytes_ref(module);
 }
 EXPORT uint64_t fft64_vec_znx_big_normalize_base2k_tmp_bytes(  //
     const MODULE* module,                                       // N
-    uint64_t nn
 ) {
-  return vec_znx_normalize_base2k_tmp_bytes_ref(module, nn);
+  return vec_znx_normalize_base2k_tmp_bytes_ref(module);
 }
 #else
 EXPORT uint64_t fft64_vec_znx_big_normalize_base2k_tmp_bytes(  //
-    const MODULE* module,                                       // N
-    uint64_t nn
+    const MODULE* module                                     // N
     ) __attribute((alias("vec_znx_normalize_base2k_tmp_bytes_ref")));
 
 EXPORT uint64_t fft64_vec_znx_big_range_normalize_base2k_tmp_bytes(  //
-    const MODULE* module,                                             // N
-    uint64_t nn
+    const MODULE* module                                          // N
     ) __attribute((alias("vec_znx_normalize_base2k_tmp_bytes_ref")));
 #endif
 
