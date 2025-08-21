@@ -6,6 +6,7 @@ set(SRCS_GENERIC
         commons_private.c
         coeffs/coeffs_arithmetic.c
         arithmetic/vec_znx.c
+        arithmetic/zn64_arithmetic.c
         arithmetic/vec_znx_dft.c
         arithmetic/vector_matrix_product.c
         cplx/cplx_common.c

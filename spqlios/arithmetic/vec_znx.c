@@ -11,6 +11,7 @@
 #include "../reim4/reim4_arithmetic.h"
 #include "vec_znx_arithmetic.h"
 #include "vec_znx_arithmetic_private.h"
+#include "zn64_arithmetic.h"
 
 // general function (virtual dispatch)
 
@@ -250,33 +251,10 @@ EXPORT void vec_znx_normalize_base2k_ref(const MODULE* module,                  
                                          const int64_t* a, uint64_t a_size, uint64_t a_sl,  // a
                                          uint8_t* tmp_space  // scratch space of size >= N
 ) {
-
-  // use MSB limb of res for carry propagation
-  uint64_t nn = module->nn;
-  int64_t* cout = (int64_t*)tmp_space;
-  int64_t* cin = 0x0;
-
-  // propagate carry until first limb of res
-  int64_t i = a_size - 1;
-  for (; i >= res_size; --i) {
-    znx_normalize(nn, log2_base2k, 0x0, cout, a + i * a_sl, cin);
-    cin = cout;
-  }
-
-  // propagate carry and normalize
-  for (; i >= 1; --i) {
-    znx_normalize(nn, log2_base2k, res + i * res_sl, cout, a + i * a_sl, cin);
-    cin = cout;
-  }
-
-  // normalize last limb
-  znx_normalize(nn, log2_base2k, res, 0x0, a, cin);
-
-  // extend result with zeros
-  for (uint64_t i = a_size; i < res_size; ++i) {
-    znx_zero_i64_ref(nn, res + i * res_sl);
-  }
+  zn64_normalize_base2k_ref(module->nn, log2_base2k, res, res_size, res_sl, a, a_size, a_sl, tmp_space);
 }
+
+
 
 EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes_ref(const MODULE* module  // N
 ) {
