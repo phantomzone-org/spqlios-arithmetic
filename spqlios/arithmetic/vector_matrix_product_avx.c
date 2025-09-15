@@ -118,6 +118,10 @@ EXPORT void fft64_vmp_apply_dft_to_dft_add_avx(const MODULE* module,            
   const uint64_t row_max = nrows < a_size ? nrows : a_size;
   const uint64_t col_max = ncols < res_size ? ncols : res_size;
 
+  if (pmat_scale >= col_max){
+    return;
+  };
+
   if (nn >= 8) {
     for (uint64_t blk_i = 0; blk_i < m / 4; blk_i++) {
       double* mat_blk_start = mat_input + blk_i * (8 * nrows * ncols);
