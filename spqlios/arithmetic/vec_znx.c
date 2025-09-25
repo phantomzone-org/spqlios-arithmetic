@@ -264,12 +264,12 @@ EXPORT uint64_t vec_znx_normalize_base2k_tmp_bytes_ref(const MODULE* module  // 
 // alias have to be defined in this unit: do not move
 #ifdef __APPLE__
 EXPORT uint64_t fft64_vec_znx_big_range_normalize_base2k_tmp_bytes(  //
-    const MODULE* module,                                             // N
+    const MODULE* module                                             // N
 ) {
   return vec_znx_normalize_base2k_tmp_bytes_ref(module);
 }
 EXPORT uint64_t fft64_vec_znx_big_normalize_base2k_tmp_bytes(  //
-    const MODULE* module,                                       // N
+    const MODULE* module                                       // N
 ) {
   return vec_znx_normalize_base2k_tmp_bytes_ref(module);
 }
